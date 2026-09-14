@@ -8,9 +8,16 @@ working around a few current Shortcuts and Journal limitations. It has been used
 to move more than 1,200 entries, and other users have reported successful
 imports with much larger archives.
 
-## Download
+## Version and downloads
 
-- [Import_Day_One_to_Journal.shortcut](Import_Day_One_to_Journal.shortcut)
+The revised source is **1.1.0-beta.1**, an unreleased update to the original
+unversioned importer. See [the changelog](CHANGELOG.md) for its fixes and test
+status.
+
+The `.shortcut` below is the older signed importer. It does **not** contain the
+1.1.0-beta.1 fixes. A signed beta download is pending.
+
+- [Older signed importer](Import_Day_One_to_Journal.shortcut)
 - Original discussion: [Day One to Journal Importer Shortcut for iOS & macOS 26](https://www.reddit.com/r/appleJournal/comments/1mxwdey/day_one_to_journal_importer_shortcut_for_ios/)
 
 ## What it imports
@@ -25,9 +32,11 @@ imports with much larger archives.
 - Day One location details appended to the entry text so you can manually add
   the location back in Journal later.
 
-The Shortcut also keeps a JSON ledger of entries it has already imported. This
-lets you run it again after a failure without starting over or duplicating
-completed entries.
+The Shortcut also keeps a JSON ledger of entries it has already imported. It
+checks each entry's UUID rather than skipping entries by their position in the
+export. Keep using the same ledger when resuming or importing reduced batches.
+If Journal creates an entry but the ledger cannot be saved afterward, a retry
+can still duplicate that entry.
 
 ## Requirements
 
@@ -42,11 +51,20 @@ standalone options in Shortcuts.
 
 ## Export from Day One
 
+These steps describe the revised 1.1.0-beta.1 source. The older signed download
+does not include the ledger-folder menu or JSON selection step.
+
 1. Export your Day One journal as JSON.
 2. Day One will create a zip archive.
 3. Unzip the archive.
-4. Run the Shortcut on the unzipped export folder and grant the permissions it
-   asks for.
+4. Run the Shortcut and select the unzipped export folder.
+5. Choose **Use export folder** to load or create `already_imported_uuids.json`
+   there. To resume with a ledger stored elsewhere, choose **Choose existing
+   ledger folder** and select the folder containing that file.
+6. Choose the Day One JSON file from the list. Ledger files are excluded.
+
+The Shortcut saves progress back to the chosen ledger folder. The existing-ledger
+option stops if that folder does not contain `already_imported_uuids.json`.
 
 Run the Shortcut against the unzipped folder itself. That gives it access to the
 JSON files and the media files referenced by those JSON entries.
@@ -116,3 +134,21 @@ One export folder and that every file it reads is inside that selected folder.
 
 Patches are welcome. The Shortcut is intended to be open and editable so people
 can adapt it to their own export shape, AI model, and Journal cleanup workflow.
+
+The editable plist is in
+[`shortcuts/Import_Day_One_to_Journal.xml`](shortcuts/Import_Day_One_to_Journal.xml).
+The root `.shortcut` still contains the older signed version. After editing,
+validate and sign the plist before replacing that download. Do not run the
+importer against a personal Journal to test it.
+
+Run the offline regression checks with:
+
+```sh
+python3 -m unittest discover -s tests -v
+```
+
+These checks evaluate selected plist fragments with synthetic data and in-memory
+file operations. Unsupported actions, including Journal, are rejected. They
+cover JSON selection, UUID-based resume, ledger routing, and per-entry text and
+location state. They do not verify Apple's Shortcuts runtime, AI responses,
+iPhone compatibility, or Journal persistence.
