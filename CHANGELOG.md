@@ -2,9 +2,9 @@
 
 ## 1.1.0-beta.1
 
-Unreleased. This is the first numbered revision of the original unversioned
-importer. The editable source includes these changes; the older signed download
-does not. Signing and Shortcuts runtime checks are pending.
+Beta build, 2026-09-14. This is the first numbered revision of the original
+unversioned importer. The signed download contains the revised source.
+Shortcuts runtime and Journal integration checks are pending.
 
 - Preserve the entry body when a title is generated.
 - Clear location fields between entries so an entry without location data does

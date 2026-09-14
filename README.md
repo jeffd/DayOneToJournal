@@ -10,14 +10,11 @@ imports with much larger archives.
 
 ## Version and downloads
 
-The revised source is **1.1.0-beta.1**, an unreleased update to the original
-unversioned importer. See [the changelog](CHANGELOG.md) for its fixes and test
-status.
+The current version is **1.1.0-beta.1**. See [the changelog](CHANGELOG.md) for
+its fixes and test status. The signed beta includes the revised source, but
+Shortcuts runtime and Journal integration checks are still pending.
 
-The `.shortcut` below is the older signed importer. It does **not** contain the
-1.1.0-beta.1 fixes. A signed beta download is pending.
-
-- [Older signed importer](Import_Day_One_to_Journal.shortcut)
+- [Download 1.1.0-beta.1](https://github.com/jeffd/DayOneToJournal/raw/refs/heads/main/Import_Day_One_to_Journal.shortcut)
 - Original discussion: [Day One to Journal Importer Shortcut for iOS & macOS 26](https://www.reddit.com/r/appleJournal/comments/1mxwdey/day_one_to_journal_importer_shortcut_for_ios/)
 
 ## What it imports
@@ -50,9 +47,6 @@ The Shortcut can run on macOS even if the Journal actions do not appear as
 standalone options in Shortcuts.
 
 ## Export from Day One
-
-These steps describe the revised 1.1.0-beta.1 source. The older signed download
-does not include the ledger-folder menu or JSON selection step.
 
 1. Export your Day One journal as JSON.
 2. Day One will create a zip archive.
@@ -137,8 +131,8 @@ can adapt it to their own export shape, AI model, and Journal cleanup workflow.
 
 The editable plist is in
 [`shortcuts/Import_Day_One_to_Journal.xml`](shortcuts/Import_Day_One_to_Journal.xml).
-The root `.shortcut` still contains the older signed version. After editing,
-validate and sign the plist before replacing that download. Do not run the
+The root `.shortcut` contains the signed version of that source. After editing,
+validate and sign the plist before replacing the download. Do not run the
 importer against a personal Journal to test it.
 
 Run the offline regression checks with:
